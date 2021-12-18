@@ -33,6 +33,7 @@ Route.group(() => {
     Route.get('/user/make_order', 'API/UserController.make_order').middleware('auth')
     Route.route('/product', ['GET', 'POST', 'PUT'], 'API/ProductController.index')
     Route.get('/product/search', 'API/ProductController.search')
-    Route.route('/order', ['GET', 'POST', 'PUT'], 'API/OrderkController.index')
+    Route.post('/job/make_order', 'API/JobController.make_order')
+    Route.get('/job/status', 'API/JobController.status')
   }).prefix('/v1')
 }).prefix('/api')
