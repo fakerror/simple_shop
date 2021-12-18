@@ -1,5 +1,13 @@
 import Hash from '@ioc:Adonis/Core/Hash'
-import { BaseModel, beforeCreate, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  beforeCreate,
+  beforeSave,
+  column,
+  HasMany,
+  hasMany,
+} from '@ioc:Adonis/Lucid/Orm'
+import Order from 'App/Models/Order'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
 
@@ -27,6 +35,9 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @hasMany(() => Order, { foreignKey: 'user_id' })
+  public orders: HasMany<typeof Order>
 
   @beforeSave()
   public static async hashPassword(user: User) {
