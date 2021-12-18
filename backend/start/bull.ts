@@ -8,14 +8,26 @@
 |
 */
 
-import Bull from '@ioc:Rocketseat/Bull'
 import Env from '@ioc:Adonis/Core/Env'
+import Logger from '@ioc:Adonis/Core/Logger'
+import Bull from '@ioc:Rocketseat/Bull'
 
 const PORT = 9999
 const isDevelopment = Env.get('NODE_ENV') === 'development'
 
-Bull.process()
+function isACETool(): boolean {
+  if (Env.get('ACE_RUNNING')) {
+    return true
+  }
+  return false
+}
 
-if (isDevelopment) {
-  Bull.ui(PORT)
+if (isACETool()) {
+  Logger.warn('ace running, skip the Bull queue init')
+} else {
+  Bull.process()
+
+  if (isDevelopment) {
+    Bull.ui(PORT)
+  }
 }
