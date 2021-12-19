@@ -27,13 +27,15 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.group(() => {
     Route.route('/user', ['GET', 'POST', 'PUT'], 'API/UserController.index')
+    Route.route('/product', ['GET', 'POST', 'PUT'], 'API/ProductController.index')
+    Route.route('/order', ['GET', 'POST', 'PUT'], 'API/OrderController.index')
     Route.post('/user/login', 'API/UserController.login')
     Route.post('/user/change_password', 'API/UserController.change_password').middleware('auth')
     Route.get('/user/logout', 'API/UserController.logout').middleware('auth')
-    Route.get('/user/make_order', 'API/UserController.make_order').middleware('auth')
-    Route.route('/product', ['GET', 'POST', 'PUT'], 'API/ProductController.index')
     Route.get('/product/search', 'API/ProductController.search')
-    Route.post('/job/make_order', 'API/JobController.make_order')
+    Route.post('/job/order_make', 'API/JobController.order_make').middleware('auth')
+    Route.post('/job/order_trans_info_set', 'API/JobController.order_trans_info_set')
+    Route.post('/job/product_quantity_add', 'API/JobController.product_quantity_add')
     Route.get('/job/status', 'API/JobController.status')
   }).prefix('/v1')
 }).prefix('/api')

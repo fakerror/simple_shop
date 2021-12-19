@@ -6,9 +6,9 @@ import User from 'App/Models/User'
 export default class UserController {
   public async index(ctx: HttpContextContract) {
     async function get() {
-      let id = ctx.request.qs()['id']
+      const id = ctx.request.qs()['id']
       if (id === undefined) {
-        return
+        return await User.all()
       }
       return await User.find(id)
     }

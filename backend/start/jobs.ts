@@ -1,3 +1,3 @@
-const jobs = ['App/Jobs/Order']
+const jobs = ['App/Jobs/Atomic']
 
 export default jobs
