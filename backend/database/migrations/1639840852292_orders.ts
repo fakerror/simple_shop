@@ -24,7 +24,7 @@ export default class Orders extends BaseSchema {
         .notNullable()
         .index()
       table.decimal('quantity', 10, 0).notNullable() // 10亿级
-      table.text('trans_status').nullable()
+      table.text('trans_info').nullable()
     })
   }
 

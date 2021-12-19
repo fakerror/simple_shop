@@ -35,5 +35,5 @@ export default class Order extends BaseModel {
 
   // 物流信息
   @column()
-  public trans_status: string
+  public trans_info: string
 }
