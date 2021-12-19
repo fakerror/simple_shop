@@ -6,6 +6,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_ROOT_HOST: '%'
       MYSQL_DATABASE: simple_shop
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     volumes:
       - ./data_mysql:/var/lib/mysql
     ports:
@@ -29,5 +30,5 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 10.9.9.0/24
-          gateway: 10.9.9.1
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
