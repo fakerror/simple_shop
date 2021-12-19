@@ -15,15 +15,15 @@ import Bull from '@ioc:Rocketseat/Bull'
 const PORT = 9999
 const isDevelopment = Env.get('NODE_ENV') === 'development'
 
-function isACETool(): boolean {
-  if (Env.get('ACE_RUNNING')) {
+function isACECMD(): boolean {
+  if (Env.get('ACE_CMD') === true) {
     return true
   }
   return false
 }
 
-if (isACETool()) {
-  Logger.warn('ace running, skip the Bull queue init')
+if (isACECMD()) {
+  Logger.warn('ace cmd running, skip the Bull queue init')
 } else {
   Bull.process()
 
