@@ -17,7 +17,7 @@ import { AuthConfig } from '@ioc:Adonis/Addons/Auth'
 |
 */
 const authConfig: AuthConfig = {
-  guard: 'api',
+  guard: 'user_api',
   guards: {
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +93,7 @@ const authConfig: AuthConfig = {
     | on cookies/sessions.
     |
     */
-    api: {
+    user_api: {
       driver: 'oat',
 
       /*
@@ -225,6 +225,22 @@ const authConfig: AuthConfig = {
         |
         */
         model: () => import('App/Models/User'),
+      },
+    },
+    admin_api: {
+      driver: 'oat',
+      tokenProvider: {
+        type: 'api',
+        driver: 'database',
+        table: 'admin_api_tokens',
+        foreignKey: 'user_id',
+      },
+
+      provider: {
+        driver: 'lucid',
+        identifierKey: 'id',
+        uids: ['username'],
+        model: () => import('App/Models/Admin'),
       },
     },
   },
