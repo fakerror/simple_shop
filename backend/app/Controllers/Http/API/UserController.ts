@@ -1,6 +1,7 @@
 import { Exception } from '@adonisjs/core/build/standalone'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema } from '@ioc:Adonis/Core/Validator'
 import User from 'App/Models/User'
 
 export default class UserController {
@@ -26,10 +27,14 @@ export default class UserController {
     }
   }
   public async login(ctx: HttpContextContract) {
-    const username = ctx.request.input('username')
-    const password = ctx.request.input('password')
+    const validator = schema.create({
+      username: schema.string({ trim: true }),
+      password: schema.string({ trim: true }),
+    })
+    const args = await ctx.request.validate({ schema: validator })
+
     try {
-      const token = await ctx.auth.use('api').attempt(username, password)
+      const token = await ctx.auth.use('user_api').attempt(args.username, args.password)
       return token
     } catch {
       ctx.response.badRequest('错误的用户名或者密码')
@@ -37,28 +42,35 @@ export default class UserController {
     }
   }
   public async register(ctx: HttpContextContract) {
-    const username = ctx.request.input('username')
-    const password = ctx.request.input('password')
+    const validator = schema.create({
+      username: schema.string({ trim: true }),
+      password: schema.string({ trim: true }),
+    })
+    const args = await ctx.request.validate({ schema: validator })
 
-    if (await User.findBy('username', username)) {
+    if (await User.findBy('username', args.username)) {
       ctx.response.badRequest('用户名已存在')
       return
     }
     const user = new User()
-    await user.fill({ username: username, password: password }).save()
+    await user.fill(args).save()
     return '注册成功'
   }
 
   public async change_password(ctx: HttpContextContract) {
-    const user = await ctx.auth.use('api').authenticate()
+    const user = await ctx.auth.use('user_api').authenticate()
 
-    const oldPassword = ctx.request.input('old_password')
-    const newPassword = ctx.request.input('new_password')
-    if (!(await Hash.verify(user.password, oldPassword))) {
+    const validator = schema.create({
+      old_password: schema.string({ trim: true }),
+      new_password: schema.string({ trim: true }),
+    })
+    const args = await ctx.request.validate({ schema: validator })
+
+    if (!(await Hash.verify(user.password, args.old_password))) {
       ctx.response.badRequest('原密码不正确')
       return
     }
-    user.password = newPassword
+    user.password = args.new_password
     await user.save()
   }
 }
