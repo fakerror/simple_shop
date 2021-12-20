@@ -6,7 +6,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class JobController {
   public async order_make(ctx: HttpContextContract) {
-    const user = await ctx.auth.use('api').authenticate()
+    const user = await ctx.auth.use('user_api').authenticate()
     const validator = schema.create({
       product_id: schema.string({ trim: true }),
       quantity: schema.number(),
