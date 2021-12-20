@@ -16,7 +16,7 @@ const PORT = 9999
 const isDevelopment = Env.get('NODE_ENV') === 'development'
 
 function isACECMD(): boolean {
-  if (Env.get('ACE_CMD') === true) {
+  if (process.env['ACE_CMD'] === 'true') {
     return true
   }
   return false
