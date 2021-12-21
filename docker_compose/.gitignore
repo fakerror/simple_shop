@@ -1,4 +1,5 @@
 .env
 data_mysql/*
 data_redis/*
+data_elasticsearch/*
 !.gitkeep
