@@ -13,13 +13,13 @@ export default class UserLogging implements JobContract {
 
   public async handle(job: any) {
     const data = job.data
-    Logger.info(`user ${data.username} logging`)
+    Logger.info(`job_start user logging ${data.username}`)
 
     const l = new UserLog()
     l.username = data.username
     l.log = data.log
     await l.save()
 
-    Logger.info('job_end handle_order_trans_info_set')
+    Logger.info('job_end user logging')
   }
 }
