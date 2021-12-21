@@ -16,6 +16,7 @@
   },
   "preloads": ["./start/routes", "./start/kernel", "./start/bull"],
   "providers": [
+    "./providers/ElasticProvider",
     "./providers/AppProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",

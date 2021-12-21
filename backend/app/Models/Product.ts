@@ -1,7 +1,8 @@
-import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, beforeSave, column } from '@ioc:Adonis/Lucid/Orm'
+import Bull from '@ioc:Rocketseat/Bull'
+import Job from 'App/Jobs/ElasticAdd'
 import { DateTime } from 'luxon'
 import { v4 as uuid } from 'uuid'
-
 export default class Product extends BaseModel {
   public static selfAssignPrimaryKey = true
   @beforeCreate()
@@ -28,4 +29,16 @@ export default class Product extends BaseModel {
 
   @column()
   public quantity: number
+
+  @beforeSave()
+  public static async saveToEs(product: Product) {
+    await Bull.add(Job.key, {
+      index: this.table,
+      data: {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+      },
+    })
+  }
 }

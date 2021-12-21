@@ -27,4 +27,5 @@ export default Env.rules({
   MYSQL_PASSWORD: Env.schema.string.optional(),
   MYSQL_DB_NAME: Env.schema.string(),
   SESSION_DRIVER: Env.schema.string(),
+  ELASTIC_SEARCH_URL: Env.schema.string(),
 })
