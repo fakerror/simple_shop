@@ -29,7 +29,8 @@ Route.group(() => {
   Route.post('/admin_user/login', 'API/AdminController.login')
   Route.post('/admin_user/register', 'API/AdminController.register')
   Route.post('/user/login', 'API/UserController.login')
-  Route.get('/product/search', 'API/ProductController.search')
+  Route.get('/product_list', 'API/ProductController.list')
+  Route.get('/product_search', 'API/ProductController.search')
 })
   .prefix('/v1')
   .prefix('/api')
@@ -38,7 +39,7 @@ Route.group(() => {
 Route.group(() => {
   Route.route('/admin_user', ['GET', 'POST', 'PUT'], 'API/AdminController.index')
   Route.post('/admin_user/change_password', 'API/AdminController.change_password')
-  Route.get('/admin_user/logout', 'API/AdminController.logout')
+  Route.post('/admin_user/logout', 'API/AdminController.logout')
   Route.route('/user', ['GET', 'POST', 'PUT'], 'API/UserController.index')
   Route.route('/product', ['GET', 'POST', 'PUT'], 'API/ProductController.index')
   Route.route('/order', ['GET', 'POST', 'PUT'], 'API/OrderController.index')
@@ -52,7 +53,8 @@ Route.group(() => {
 // user
 Route.group(() => {
   Route.post('/user/change_password', 'API/UserController.change_password')
-  Route.get('/user/logout', 'API/UserController.logout')
+  Route.post('/user/logout', 'API/UserController.logout')
+  Route.get('/user/order_list', 'API/UserController.order_list')
   Route.post('/job/order_make', 'API/JobController.order_make')
   Route.get('/job/status', 'API/JobController.status')
 })

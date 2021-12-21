@@ -24,4 +24,10 @@ export default class ProductController {
         return
     }
   }
+  public async list(_: HttpContextContract) {
+    return await Product.all()
+  }
+  public async search(_: HttpContextContract) {
+    return await Product.all()
+  }
 }

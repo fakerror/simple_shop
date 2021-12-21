@@ -73,4 +73,20 @@ export default class UserController {
     user.password = args.new_password
     await user.save()
   }
+
+  public async logout(ctx: HttpContextContract) {
+    await ctx.auth.use('user_api').authenticate()
+
+    await ctx.auth.use('user_api').logout()
+  }
+
+  public async order_list(ctx: HttpContextContract) {
+    const user = await ctx.auth.use('user_api').authenticate()
+
+    await user.load('orders', (orders_query) => {
+      orders_query.preload('product')
+    })
+
+    return user.orders
+  }
 }
