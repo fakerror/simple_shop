@@ -1,6 +1,5 @@
-import { ApiResponse, Client } from '@elastic/elasticsearch'
-import Application from '@ioc:Adonis/Core/Application'
 import Logger from '@ioc:Adonis/Core/Logger'
+import Elastic from '@ioc:Elastic'
 import { JobContract, JobsOptions, QueueOptions, WorkerOptions } from '@ioc:Rocketseat/Bull'
 
 export default class ElasticAdd implements JobContract {
@@ -16,13 +15,14 @@ export default class ElasticAdd implements JobContract {
     const data = job.data
     Logger.info(`job_start elastic ${data.index} add`)
 
-    const Elastic: Client = Application.container.use('Elastic')
+    // const Elastic: Client = Application.container.use('Elastic')
 
-    const response: ApiResponse = await Elastic.index({
+    const response = await Elastic.index({
       id: data.data.id,
       index: data.index,
       body: data.data,
     })
+    Logger.debug(response.statusCode!.toString())
 
     Logger.info('job_end elastic_add')
   }
