@@ -9,25 +9,13 @@
 */
 
 import Env from '@ioc:Adonis/Core/Env'
-import Logger from '@ioc:Adonis/Core/Logger'
 import Bull from '@ioc:Rocketseat/Bull'
 
 const PORT = 9999
 const isDevelopment = Env.get('NODE_ENV') === 'development'
 
-function isACECMD(): boolean {
-  if (process.env['ACE_CMD'] === 'true') {
-    return true
-  }
-  return false
-}
+Bull.process()
 
-if (isACECMD()) {
-  Logger.warn('ace cmd running, skip the Bull queue init')
-} else {
-  Bull.process()
-
-  if (isDevelopment) {
-    Bull.ui(PORT)
-  }
+if (isDevelopment) {
+  Bull.ui(PORT)
 }

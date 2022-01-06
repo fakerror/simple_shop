@@ -14,7 +14,15 @@
     "Database": "database",
     "Contracts": "contracts"
   },
-  "preloads": ["./start/routes", "./start/kernel", "./start/bull"],
+  "preloads": [
+    "./start/routes",
+    "./start/kernel",
+    {
+      "file": "./start/bull",
+      "optional": false,
+      "environment": ["web"]
+    }
+  ],
   "providers": [
     "./providers/ElasticProvider",
     "./providers/AppProvider",

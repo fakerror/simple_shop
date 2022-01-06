@@ -7,11 +7,6 @@
 |
 */
 
-process.env['ACE_CMD'] = true
-if (process.argv.slice(2)[0] === 'serve') {
-  process.env['ACE_CMD'] = false
-}
-
 require('reflect-metadata')
 require('source-map-support').install({ handleUncaughtExceptions: false })
 
