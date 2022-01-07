@@ -1,5 +1,6 @@
 import Env from '@ioc:Adonis/Core/Env'
 import Logger from '@ioc:Adonis/Core/Logger'
+import Database from '@ioc:Adonis/Lucid/Database'
 import { JobContract, JobsOptions, QueueOptions, WorkerOptions } from '@ioc:Rocketseat/Bull'
 import Order from 'App/Models/Order'
 import Product from 'App/Models/Product'
@@ -47,21 +48,23 @@ export default class Atomic implements JobContract {
     Logger.info(Object.assign({ job_start: 'handle_order_make' }, args))
     await dev_wait()
 
-    const user = await User.findOrFail(args.user_id)
-    const product = await Product.findOrFail(args.product_id)
-    const quantity = args.quantity
+    await Database.transaction(async (trx) => {
+      const user = await User.findOrFail(args.user_id, trx)
+      const product = await Product.findOrFail(args.product_id, trx)
+      const quantity = args.quantity
 
-    if (product.quantity < quantity) {
-      throw '商品数量不足'
-    }
+      if (product.quantity < quantity) {
+        throw '商品数量不足'
+      }
 
-    product.quantity -= quantity
-    await product.save()
+      product.quantity -= quantity
+      await product.save()
 
-    const order = await user
-      .related('orders')
-      .create({ product_id: product.id, quantity: quantity })
-    await order.save()
+      const order = await user
+        .related('orders')
+        .create({ product_id: product.id, quantity: quantity })
+      await order.save()
+    })
 
     Logger.info('job_end handle_order_make')
   }
@@ -69,9 +72,11 @@ export default class Atomic implements JobContract {
     Logger.info(Object.assign({ job_start: 'handle_order_trans_info_set' }, args))
     await dev_wait()
 
-    const order = await Order.findOrFail(args.order_id)
-    order.trans_info = args.trans_info
-    await order.save()
+    await Database.transaction(async (trx) => {
+      const order = await Order.findOrFail(args.order_id, trx)
+      order.trans_info = args.trans_info
+      await order.save()
+    })
 
     Logger.info('job_end handle_order_trans_info_set')
   }
@@ -79,9 +84,11 @@ export default class Atomic implements JobContract {
     Logger.info(Object.assign({ job_start: 'handle_product_quantity_add' }, args))
     await dev_wait()
 
-    const product = await Product.findOrFail(args.product_id)
-    product.quantity += args.quantity_add
-    await product.save()
+    await Database.transaction(async (trx) => {
+      const product = await Product.findOrFail(args.product_id, trx)
+      product.quantity += args.quantity_add
+      await product.save()
+    })
 
     Logger.info('job_end handle_product_quantity_add')
   }
