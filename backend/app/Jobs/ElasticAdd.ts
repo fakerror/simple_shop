@@ -22,7 +22,7 @@ export default class ElasticAdd implements JobContract {
       index: data.index,
       body: data.data,
     })
-    Logger.debug(response.statusCode!.toString())
+    Logger.debug(`ElasticAdd Status Code: ${response.statusCode!.toString()}`)
 
     Logger.info('job_end elastic_add')
   }
